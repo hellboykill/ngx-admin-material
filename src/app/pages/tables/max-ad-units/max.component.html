@@ -1,0 +1,15 @@
+<div class="row show-grid">
+  <div class="col-md-10">
+    <div class="table-name">MAX Ad Units</div>
+  </div>
+  <div class="btn-group float-right" role="group" aria-label="Basic example">
+    <button type="button" [routerLink]="'create'" class="btn btn-success">Create Ad Unit</button>
+    <button type="button" [routerLink]="'edit'" class="btn btn-warning">Edit Ad Unit</button>
+  </div>
+</div>
+<nb-card>
+  <nb-card-body>
+    <!-- <input #search class="search" type="text" placeholder="Search..." (keydown.enter)="onSearch(search.value)" /> -->
+    <ng2-smart-table [source]="source" [settings]="settings"> </ng2-smart-table>
+  </nb-card-body>
+</nb-card>

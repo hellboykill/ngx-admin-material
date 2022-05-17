@@ -1,0 +1,37 @@
+<nb-card class="popover-card">
+  <nb-card-header style="text-align: center" status="warning">Country Targeting</nb-card-header>
+  <nb-card-body>
+    <nb-radio-group [(ngModel)]="countryType">
+      <nb-radio *ngFor="let countryType of countryTypes" [value]="countryType.value">
+        {{ countryType.label }}
+      </nb-radio>
+    </nb-radio-group>
+    <nb-radio value="include">Include</nb-radio>
+    <nb-radio value="exclude">Exclude</nb-radio>
+    <input nbInput fullWidth />
+    <label style="margin-top: 10px"
+      >Common Region Shortcuts:
+      <nb-icon
+        style="margin: 0 0 0 10px; font-size: 1rem; width: 15px; height: 15px"
+        nbTooltip="Use these shortcuts to target pre-defined common country groups."
+        nbTooltipPlacement="top"
+        class="nb-help"
+      ></nb-icon
+    ></label>
+
+    <!-- <angular2-multiselect
+    [data]="contryList"
+    [(ngModel)]="selectedItems"
+    [settings]="dropdownSettings"
+    (onSelect)="onItemSelect($event)"
+    (onDeSelect)="OnItemDeSelect($event)"
+    (onSelectAll)="onSelectAll($event)"
+    (onDeSelectAll)="onDeSelectAll($event)"
+  ></angular2-multiselect> -->
+    <div><label>Tier 1 English Speaking</label> <label>,EEA</label></div>
+  </nb-card-body>
+  <nb-card-body>
+    <button type="button" class="btn btn-outline-secondary">Clear All</button>
+    <button type="button" class="btn btn-outline-info float-right">Apply</button>
+  </nb-card-body>
+</nb-card>

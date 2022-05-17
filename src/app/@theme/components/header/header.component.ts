@@ -21,11 +21,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   themes = [
     {
-      value: 'default',
+      value: 'material-light',
       name: 'Light',
     },
     {
-      value: 'dark',
+      value: 'material-dark',
       name: 'Dark',
     },
     {
@@ -35,14 +35,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
     {
       value: 'corporate',
       name: 'Corporate',
-    },
-    {
-      value: 'material-light',
-      name: 'Material Light',
-    },
-    {
-      value: 'material-dark',
-      name: 'Material Dark',
     },
   ];
 

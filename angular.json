@@ -1,5 +1,8 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "cli": {
+    "analytics": "8165c125-1a5d-4936-91e5-a7809821b5a3"
+  },
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
@@ -19,8 +22,8 @@
             "polyfills": "src/polyfills.ts",
             "assets": [
               "src/assets",
-              "src/favicon.ico",
-              "src/favicon.png",
+              "src/meo_image.jpg",
+              "src/meo_image.jpg",
               {
                 "glob": "**/*",
                 "input": "node_modules/leaflet/dist/images",

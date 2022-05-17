@@ -1,16 +1,12 @@
 <div class="header-container">
   <div class="logo-container">
-    <a
-      href="#"
-      class="sidebar-toggle"
-      matRipple
-      [matRippleUnbounded]="true"
-      [matRippleCentered]="true"
-      (click)="toggleSidebar()"
-    >
-      <nb-icon [icon]="(materialTheme$ | async) ? 'menu-outline' : 'menu-2-outline'"></nb-icon>
+    <a (click)="toggleSidebar()" href="#" class="sidebar-toggle">
+      <nb-icon icon="menu-2-outline"></nb-icon>
     </a>
-    <a class="logo" href="#" (click)="navigateHome()">ngx-<span>admin</span></a>
+    <a class="logo" href="#" (click)="navigateHome()">
+      Rocket Studio
+      <h6 class="sub-title" style="text-align: center">Succeed Together</h6>
+    </a>
   </div>
   <nb-select
     status="primary"

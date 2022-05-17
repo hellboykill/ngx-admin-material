@@ -11,6 +11,7 @@
     display: flex;
     align-items: center;
     width: calc(#{nb-theme(sidebar-width)} - #{nb-theme(header-padding)});
+    margin-right: 7rem;
   }
 
   nb-action {
@@ -44,11 +45,19 @@
 
     .logo {
       padding: 0 1.25rem;
-      font-size: 1.75rem;
+      font-size: 2rem;
       @include nb-ltr(border-left, 1px solid nb-theme(divider-color));
       @include nb-rtl(border-right, 1px solid nb-theme(divider-color));
       white-space: nowrap;
       text-decoration: none;
+      font-weight: bold;
+      font-family: "Lucida Console", "Courier New", monospace;
+    }
+    .sub-title {
+      font-family: "Lucida Console", "Courier New", monospace;
+      font-size: 1rem;
+      text-align: center;
+      font-weight: normal;
     }
   }
 
