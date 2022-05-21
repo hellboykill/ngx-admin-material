@@ -60,6 +60,37 @@ export const AD_NETWORK = {
   yandex: false,
   yahooOther: false,
 };
+// network support: 0: banner, 1: inter, 2: merc, 3: native, 4: reward
+export const ads_network_key = [
+  /** bidder network */
+  "ADCOLONY_NETWORK", // 2 , 0
+  "FACEBOOK_NETWORK", // 2, 0
+  "FACEBOOK_NATIVE_BIDDING", // 2
+  "INMOBI_BIDDING", // 2
+  "MINTEGRAL_BIDDING", // 2
+  "MYTARGET_BIDDING", // 2
+  "TIKTOK_BIDDING", // 2
+  "SMAATO_BIDDING", // 2
+  "VERVE_BIDDING", // 2
+  "VUNGLE_BIDDING", // 2
+  "VERIZON_BIDDING", // 2
+
+  /** other network */
+  "ADMOB_NETWORK", // 2
+  "ADMOB_NATIVE_NETWORK", // 2
+  "CHARTBOOST_NETWORK", // 2
+  "FYBER_NETWORK", // 2
+  "GOOGLE_AD_MANAGER_NETWORK", // 2
+  "GOOGLE_AD_MANAGER_NATIVE_NETWORK", // 2
+  "HYPRMX_NETWORK", // 2
+  "LINE_NETWORK", // 2
+  "LINE_NATIVE_NETWORK", // 2
+  "MYTARGET_NETWORK", // 2
+  "TIKTOK_NATIVE_NETWORK", // 2
+  "SMAATO_NETWORK", // 2
+  "VUNGLE_NETWORK", // 2
+  "VERIZON_NETWORK", // 2
+];
 
 export enum TypeCounty {
   INCLUDE = "INCLUDE",

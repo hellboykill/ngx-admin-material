@@ -1,54 +1,61 @@
 import { Component } from "@angular/core";
 import { Country } from "../create/max-helper";
-import { country_Tier1, country_EEA } from "./country-helper";
+import * as ContryCode from "./country-helper";
+import { IDropdownSettings } from "ng-multiselect-dropdown";
+import { timingSafeEqual } from "crypto";
+
 @Component({
   selector: "ngbd-dropdown-form",
   styleUrls: ["./country-target.component.scss"],
   templateUrl: "./country-target.component.html",
 })
 export class CountryTargetComponent {
-  countryTypes: [{ value: "INCLUDE"; label: "Include"; checked: true }, { value: "EXCLUDE"; label: "Exclude" }];
-  countryType: string;
-  tier1 = country_Tier1;
-  eea = country_EEA;
-  contryList = [
-    { id: 1, itemName: "India" },
-    { id: 2, itemName: "Singapore" },
-    { id: 3, itemName: "Australia" },
-    { id: 4, itemName: "Canada" },
-    { id: 5, itemName: "South Korea" },
-    { id: 6, itemName: "Germany" },
-    { id: 7, itemName: "France" },
-    { id: 8, itemName: "Russia" },
-    { id: 9, itemName: "Italy" },
-    { id: 10, itemName: "Sweden" },
-  ];
-  selectedItems = [
-    { id: 2, itemName: "Singapore" },
-    { id: 3, itemName: "Australia" },
-    { id: 4, itemName: "Canada" },
-    { id: 5, itemName: "South Korea" },
-  ];
-  dropdownSettings = {
-    singleSelection: false,
-    text: "Select Countries",
-    selectAllText: "Select All",
-    unSelectAllText: "UnSelect All",
-    enableSearchFilter: true,
-    classes: "myclass custom-class",
+  tier1 = ContryCode.country_Tier1;
+  eea = ContryCode.country_EEA;
+  latam = ContryCode.country_LATAM;
+  groups = ContryCode.groups;
+  dropdownList = [...this.tier1, ...this.eea, ...this.latam].sort((a: any, b: any) =>
+    a.label > b.label ? 1 : b.label > a.label ? -1 : 0
+  );
+
+  countryType = "INCLUDE";
+
+  dropdownSettings: IDropdownSettings = {
+    closeDropDownOnSelection: false,
+    itemsShowLimit: 50,
+    enableCheckAll: false,
+    idField: "value",
+    textField: "label",
+    maxHeight: 400,
+    allowSearchFilter: true,
   };
+
+  selectedItems = [{ value: "us", label: "United States" }];
+
   onItemSelect(item: any) {
-    console.log(item);
+    // this.selectedItems.push(item);
+    // console.log(this.selectedItems);
+    console.log("onItemSelect", item);
+  }
+
+  onItemDeSelect(item: any) {
+    // let newItem = [];
+    // this.selectedItems.forEach((index) => {
+    //   if (index !== item.value) {
+    //     newItem.push(item);
+    //   }
+    // });
+    // this.selectedItems = newItem;
+    console.log("selected item after delete", this.selectedItems);
+    console.log("onItemDeSelect", item);
+  }
+  onSelectCountryGroup(id: string) {
+    this.selectedItems.push(...this.latam);
     console.log(this.selectedItems);
+    console.log(id);
   }
-  OnItemDeSelect(item: any) {
-    console.log(item);
-    console.log(this.selectedItems);
-  }
-  onSelectAll(items: any) {
-    console.log(items);
-  }
-  onDeSelectAll(items: any) {
-    console.log(items);
+
+  onApplyCountry(data) {
+    console.log(data);
   }
 }

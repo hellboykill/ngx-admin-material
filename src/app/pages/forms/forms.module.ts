@@ -26,6 +26,8 @@ import { DatepickerComponent } from "./datepicker/datepicker.component";
 import { ButtonsComponent } from "./buttons/buttons.component";
 import { MaterialButtonsComponent } from "./buttons/material-buttons/material-buttons.component";
 import { FormsModule as ngFormsModule } from "@angular/forms";
+import { NgMultiSelectDropDownModule } from "ng-multiselect-dropdown";
+import { NgSelectModule } from "@ng-select/ng-select";
 
 import { MaxCreateComponent } from "../tables/max-ad-units/create/max-create.component";
 import { CountryTargetComponent } from "../tables/max-ad-units/country-target/country-target.component";
@@ -72,6 +74,8 @@ const materialModules = [
     NbTooltipModule,
     NbPopoverModule,
     ngFormsModule,
+    NgSelectModule,
+    NgMultiSelectDropDownModule.forRoot(),
     ...materialModules,
   ],
   declarations: [

@@ -1,8 +1,16 @@
 .nb-card {
   margin: 0;
+  max-height: 700px;
   width: 30rem;
 }
 .popover-card {
   margin: 0;
+  max-height: 700px;
+
   width: 30rem;
+}
+
+.country-label {
+  margin-left: 15px;
+  color: rgb(73, 192, 240);
 }
