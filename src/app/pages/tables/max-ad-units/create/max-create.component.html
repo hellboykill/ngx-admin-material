@@ -1,0 +1,594 @@
+<div class="header-new">Create New Ad Unit</div>
+
+<div class="from-group">
+  <div class="row justify-content-md-center">
+    <div class="col-md-9">
+      <div class="row show-grid">
+        <input
+          nbInput
+          matRipple
+          fullWidth
+          nbPopoverPlacement="bottom"
+          [nbPopover]="contryTargetComponent"
+          placeholder="Include All"
+        />
+      </div>
+    </div>
+    <div class="col-md-9">
+      <nb-card>
+        <nb-card-header>Name</nb-card-header>
+        <nb-card-body>
+          <div class="form-group row">
+            <div class="col-sm-12">
+              <input
+                type="text"
+                name="adUnit"
+                nbInput
+                fullWidth
+                id="adUnit"
+                [(ngModel)]="adUnit"
+                placeholder="Enter Ad Unit Name"
+              />
+            </div>
+          </div>
+        </nb-card-body>
+      </nb-card>
+    </div>
+
+    <div class="col-md-9">
+      <nb-card>
+        <nb-card-header
+          >Platform
+          <nb-icon
+            style="margin: 0 0 0 10px; font-size: 1rem; width: 15px; height: 15px"
+            nbTooltip="To select an application already saved in the AppDiscovery section, please enter the application name. For other live apps in the store, package name or iTunes Store ID should be used. If your app is not live yet, please manually add your package name."
+            nbTooltipPlacement="right"
+            class="nb-help"
+          ></nb-icon>
+        </nb-card-header>
+        <input
+          *ngIf="platform == null"
+          style="text-align: center"
+          type="text"
+          nbInput
+          fullWidth
+          placeholder="Please select a Platform"
+          disabled
+        />
+        <nb-card-body>
+          <div class="col-sm-12">
+            <nb-radio-group [(ngModel)]="platform" name="platform">
+              <nb-radio *ngFor="let platform of platforms" [value]="platform.value">
+                {{ platform.label }}
+              </nb-radio>
+            </nb-radio-group>
+            <div *ngIf="platform != null">
+              <input
+                type="appName"
+                nbInput
+                fullWidth
+                [(ngModel)]="package"
+                id="inputAppName"
+                placeholder="Enter your application name, package name, bundle ID or numberical iTunes ID"
+              />
+            </div>
+          </div>
+        </nb-card-body>
+      </nb-card>
+    </div>
+
+    <div class="col-md-9">
+      <nb-card>
+        <nb-card-header>Ad Type</nb-card-header>
+        <nb-card-body>
+          <div class="col-sm-12">
+            <nb-radio-group [(ngModel)]="adType" name="adtype">
+              <nb-radio *ngFor="let adType of adTypes" [value]="adType.value">
+                {{ adType.label }}
+              </nb-radio>
+            </nb-radio-group>
+          </div>
+        </nb-card-body>
+      </nb-card>
+    </div>
+
+    <div class="col-md-9" *ngIf="adType === 'Native'">
+      <nb-card>
+        <nb-card-header>Template</nb-card-header>
+        <nb-card-body>
+          <div class="col-sm-9">
+            <nb-radio-group [(ngModel)]="templateSize" name="templateSize">
+              <nb-radio *ngFor="let templateSize of templateSizes" [value]="templateSize.value">
+                {{ templateSize.label }}
+              </nb-radio>
+            </nb-radio-group>
+          </div>
+        </nb-card-body>
+      </nb-card>
+    </div>
+    <div class="col-md-9">
+      <nb-card style="margin: 0">
+        <nb-card-header style="margin-left: 50px"
+          >Default Waterfall
+          <nb-icon
+            style="margin: 0 0 0 10px; font-size: 1rem; width: 15px; height: 15px"
+            nbTooltip="Waterfall Targeting: &#013;  &#013;Device Type Targeting: All  &#013;Gender: All &#013;Age: All  &#013;Keywords: None"
+            nbTooltipPlacement="right"
+            class="nb-help"
+            nbTooltipClass="multiline-tooltip"
+          ></nb-icon
+        ></nb-card-header>
+
+        <nb-card-header
+          >Bidder Networks<nb-icon
+            style="margin: 0 0 0 10px; font-size: 1rem; width: 15px; height: 15px"
+            nbTooltip="MAX in-app bidders are SDK based networks that compete to maximize revenue in a real-time auction. Revenue estimated is expected to match the revenue reported by the network partner."
+            class="nb-help"
+            nbTooltipPlacement="top"
+          ></nb-icon
+        ></nb-card-header>
+        <nb-accordion multi>
+          <nb-accordion-item>
+            <nb-accordion-item-header
+              ><nb-icon
+                style="margin: 0 5px 0 0; font-size: 1rem; width: 15px; height: 15px"
+                icon="checkmark"
+                status="success"
+              ></nb-icon
+              >AppLovin</nb-accordion-item-header
+            >
+          </nb-accordion-item>
+          <nb-accordion-item>
+            <nb-accordion-item-header
+              ><nb-icon
+                style="margin: 0 5px 0 0; font-size: 1rem; width: 15px; height: 15px"
+                icon="checkmark"
+                status="success"
+              ></nb-icon
+              >AppLovin Exchange</nb-accordion-item-header
+            >
+          </nb-accordion-item>
+          <nb-accordion-item>
+            <nb-accordion-item-header
+              ><nb-icon
+                style="margin: 0 5px 0 0; font-size: 1rem; width: 15px; height: 15px"
+                *ngIf="networks.adColony === false"
+                icon="close-circle"
+                status="danger"
+              ></nb-icon
+              ><nb-icon
+                style="margin: 0 5px 0 0; font-size: 1rem; width: 15px; height: 15px"
+                *ngIf="networks.adColony === true"
+                icon="checkmark"
+                status="success"
+              ></nb-icon
+              >AdColony</nb-accordion-item-header
+            >
+            <nb-accordion-item-body>
+              <nb-checkbox (checkedChange)="toggleNetwork($event, 'adColony')">Status</nb-checkbox>
+              <div class="checked-icon" *ngIf="networks.adColony === true">
+                <header>App ID</header>
+                <input nbInput fullWidth [(ngModel)]="package" id="inputAppName" placeholder="Enter App ID" />
+                <header>Zone ID</header>
+                <input nbInput fullWidth [(ngModel)]="package" id="inputAppName" placeholder="Enter Zone ID" />
+              </div>
+            </nb-accordion-item-body>
+          </nb-accordion-item>
+          <nb-accordion-item>
+            <nb-accordion-item-header
+              ><nb-icon
+                style="margin: 0 5px 0 0; font-size: 1rem; width: 15px; height: 15px"
+                *ngIf="networks.meta === false"
+                icon="close-circle"
+                status="danger"
+              ></nb-icon
+              ><nb-icon
+                style="margin: 0 5px 0 0; font-size: 1rem; width: 15px; height: 15px"
+                *ngIf="networks.meta === true"
+                icon="checkmark"
+                status="success"
+              ></nb-icon
+              >Meta</nb-accordion-item-header
+            >
+            <nb-accordion-item-body>
+              <nb-checkbox (checkedChange)="toggleNetwork($event, 'meta')">Status</nb-checkbox>
+              <div class="checked-icon" *ngIf="networks.meta === true">
+                <header>Placement ID</header>
+                <input
+                  nbInput
+                  fullWidth
+                  [(ngModel)]="package"
+                  id="inputAppName"
+                  placeholder="e.g 436418353000121_491210917953864"
+                />
+              </div>
+            </nb-accordion-item-body>
+          </nb-accordion-item>
+          <nb-accordion-item>
+            <nb-accordion-item-header
+              ><nb-icon
+                style="margin: 0 5px 0 0; font-size: 1rem; width: 15px; height: 15px"
+                *ngIf="networks.inMobi === false"
+                icon="close-circle"
+                status="danger"
+              ></nb-icon
+              ><nb-icon
+                style="margin: 0 5px 0 0; font-size: 1rem; width: 15px; height: 15px"
+                *ngIf="networks.inMobi === true"
+                icon="checkmark"
+                status="success"
+              ></nb-icon
+              >InMobi</nb-accordion-item-header
+            >
+            <nb-accordion-item-body>
+              <nb-checkbox (checkedChange)="toggleNetwork($event, 'inMobi')">Status</nb-checkbox>
+              <div class="checked-icon" *ngIf="networks.inMobi === true">
+                <header>Account ID</header>
+                <input nbInput fullWidth [(ngModel)]="package" id="inputAppName" placeholder="Enter Account ID" />
+                <header>Pkacement ID</header>
+                <input nbInput fullWidth [(ngModel)]="package" id="inputAppName" placeholder="Enter Placement ID" />
+              </div>
+            </nb-accordion-item-body>
+          </nb-accordion-item>
+          <nb-accordion-item>
+            <nb-accordion-item-header
+              ><nb-icon
+                style="margin: 0 5px 0 0; font-size: 1rem; width: 15px; height: 15px"
+                *ngIf="networks.mintegral === false"
+                icon="close-circle"
+                status="danger"
+              ></nb-icon
+              ><nb-icon
+                style="margin: 0 5px 0 0; font-size: 1rem; width: 15px; height: 15px"
+                *ngIf="networks.mintegral === true"
+                icon="checkmark"
+                status="success"
+              ></nb-icon
+              >Mintegral</nb-accordion-item-header
+            >
+            <nb-accordion-item-body>
+              <nb-checkbox (checkedChange)="toggleNetwork($event, 'mintegral')">Status</nb-checkbox>
+              <div class="checked-icon" *ngIf="networks.mintegral === true">
+                <header>App Key</header>
+                <input nbInput fullWidth [(ngModel)]="package" id="inputAppName" placeholder="Enter App Key" />
+                <header>App ID</header>
+                <input nbInput fullWidth [(ngModel)]="package" id="inputAppName" placeholder="Enter App ID" />
+                <header>Placement ID (optional)</header>
+                <input nbInput fullWidth [(ngModel)]="package" id="inputAppName" placeholder="e.g 12345" />
+                <header>Ad Unit ID</header>
+                <input nbInput fullWidth [(ngModel)]="package" id="inputAppName" placeholder="e.g 12345" />
+              </div>
+            </nb-accordion-item-body>
+          </nb-accordion-item>
+          <nb-accordion-item>
+            <nb-accordion-item-header
+              ><nb-icon
+                style="margin: 0 5px 0 0; font-size: 1rem; width: 15px; height: 15px"
+                *ngIf="networks.mytarget === false"
+                icon="close-circle"
+                status="danger"
+              ></nb-icon
+              ><nb-icon
+                style="margin: 0 5px 0 0; font-size: 1rem; width: 15px; height: 15px"
+                *ngIf="networks.mytarget === true"
+                icon="checkmark"
+                status="success"
+              ></nb-icon
+              >MyTarget</nb-accordion-item-header
+            >
+            <nb-accordion-item-body>
+              <nb-checkbox (checkedChange)="toggleNetwork($event, 'mytarget')">Status</nb-checkbox>
+              <div class="checked-icon" *ngIf="networks.mytarget === true">
+                <header>Slot ID</header>
+                <input nbInput fullWidth [(ngModel)]="package" id="inputAppName" placeholder="Enter Slot ID" />
+              </div>
+            </nb-accordion-item-body>
+          </nb-accordion-item>
+          <nb-accordion-item>
+            <nb-accordion-item-header
+              ><nb-icon
+                style="margin: 0 5px 0 0; font-size: 1rem; width: 15px; height: 15px"
+                *ngIf="networks.pangle === false"
+                icon="close-circle"
+                status="danger"
+              ></nb-icon
+              ><nb-icon
+                style="margin: 0 5px 0 0; font-size: 1rem; width: 15px; height: 15px"
+                *ngIf="networks.pangle === true"
+                icon="checkmark"
+                status="success"
+              ></nb-icon
+              >Pangle</nb-accordion-item-header
+            >
+            <nb-accordion-item-body>
+              <nb-checkbox (checkedChange)="toggleNetwork($event, 'pangle')">Status</nb-checkbox>
+              <div class="checked-icon" *ngIf="networks.pangle === true">
+                <header>App ID</header>
+                <input nbInput fullWidth [(ngModel)]="package" id="inputAppName" placeholder="Enter App ID" />
+                <header>Slot ID</header>
+                <input nbInput fullWidth [(ngModel)]="package" id="inputAppName" placeholder="Enter Slot ID" />
+              </div>
+            </nb-accordion-item-body>
+          </nb-accordion-item>
+          <nb-accordion-item>
+            <nb-accordion-item-header
+              ><nb-icon
+                style="margin: 0 5px 0 0; font-size: 1rem; width: 15px; height: 15px"
+                *ngIf="networks.smaato === false"
+                icon="close-circle"
+                status="danger"
+              ></nb-icon
+              ><nb-icon
+                style="margin: 0 5px 0 0; font-size: 1rem; width: 15px; height: 15px"
+                *ngIf="networks.smaato === true"
+                icon="checkmark"
+                status="success"
+              ></nb-icon
+              >Smaato</nb-accordion-item-header
+            >
+            <nb-accordion-item-body>
+              <nb-checkbox (checkedChange)="toggleNetwork($event, 'smaato')">Status</nb-checkbox>
+              <div class="checked-icon" *ngIf="networks.smaato === true">
+                <header>Publisher ID</header>
+                <input nbInput fullWidth [(ngModel)]="package" id="inputAppName" placeholder="e.g xxxxxxxxxxx" />
+                <header>App Space ID</header>
+                <input nbInput fullWidth [(ngModel)]="package" id="inputAppName" placeholder="e.g xxxxxxxxxxx" />
+              </div>
+            </nb-accordion-item-body>
+          </nb-accordion-item>
+          <nb-accordion-item>
+            <nb-accordion-item-header
+              ><nb-icon
+                style="margin: 0 5px 0 0; font-size: 1rem; width: 15px; height: 15px"
+                *ngIf="networks.tapjoy === false"
+                icon="close-circle"
+                status="danger"
+              ></nb-icon
+              ><nb-icon
+                style="margin: 0 5px 0 0; font-size: 1rem; width: 15px; height: 15px"
+                *ngIf="networks.tapjoy === true"
+                icon="checkmark"
+                status="success"
+              ></nb-icon
+              >Tapjoy</nb-accordion-item-header
+            >
+            <nb-accordion-item-body>
+              <nb-checkbox (checkedChange)="toggleNetwork($event, 'tapjoy')">Status</nb-checkbox>
+              <div class="checked-icon" *ngIf="networks.tapjoy === true">
+                <header>SDK Key</header>
+                <input nbInput fullWidth [(ngModel)]="package" id="inputAppName" placeholder="Enter SDK Key" />
+                <header>Placement Name</header>
+                <input nbInput fullWidth [(ngModel)]="package" id="inputAppName" placeholder="Enter Placement Name" />
+              </div>
+            </nb-accordion-item-body>
+          </nb-accordion-item>
+          <nb-accordion-item>
+            <nb-accordion-item-header
+              ><nb-icon
+                style="margin: 0 5px 0 0; font-size: 1rem; width: 15px; height: 15px"
+                *ngIf="networks.verveGroup === false"
+                icon="close-circle"
+                status="danger"
+              ></nb-icon
+              ><nb-icon
+                style="margin: 0 5px 0 0; font-size: 1rem; width: 15px; height: 15px"
+                *ngIf="networks.verveGroup === true"
+                icon="checkmark"
+                status="success"
+              ></nb-icon
+              >Verve Group</nb-accordion-item-header
+            >
+            <nb-accordion-item-body>
+              <nb-checkbox (checkedChange)="toggleNetwork($event, 'verveGroup')">Status</nb-checkbox>
+              <div class="checked-icon" *ngIf="networks.verveGroup === true">
+                <header>App Token</header>
+                <input nbInput fullWidth [(ngModel)]="package" id="inputAppName" placeholder="Enter App Token" />
+                <header>Zone Reference</header>
+                <input nbInput fullWidth [(ngModel)]="package" id="inputAppName" placeholder="Enter Zone Reference" />
+              </div>
+            </nb-accordion-item-body>
+          </nb-accordion-item>
+          <nb-accordion-item>
+            <nb-accordion-item-header
+              ><nb-icon
+                style="margin: 0 5px 0 0; font-size: 1rem; width: 15px; height: 15px"
+                *ngIf="networks.vungle === false"
+                icon="close-circle"
+                status="danger"
+              ></nb-icon
+              ><nb-icon
+                style="margin: 0 5px 0 0; font-size: 1rem; width: 15px; height: 15px"
+                *ngIf="networks.vungle === true"
+                icon="checkmark"
+                status="success"
+              ></nb-icon
+              >Vungle</nb-accordion-item-header
+            >
+            <nb-accordion-item-body>
+              <nb-checkbox (checkedChange)="toggleNetwork($event, 'vungle')">Status</nb-checkbox>
+              <div class="checked-icon" *ngIf="networks.vungle === true">
+                <header>App ID</header>
+                <input nbInput fullWidth [(ngModel)]="package" id="inputAppName" placeholder="Enter App ID" />
+                <header>Placement Reference ID</header>
+                <input
+                  nbInput
+                  fullWidth
+                  [(ngModel)]="package"
+                  id="inputAppName"
+                  placeholder="Enter Placement Reference ID"
+                />
+              </div>
+            </nb-accordion-item-body>
+          </nb-accordion-item>
+          <nb-accordion-item>
+            <nb-accordion-item-header
+              ><nb-icon
+                style="margin: 0 5px 0 0; font-size: 1rem; width: 15px; height: 15px"
+                *ngIf="networks.yahoo === false"
+                icon="close-circle"
+                status="danger"
+              ></nb-icon
+              ><nb-icon
+                style="margin: 0 5px 0 0; font-size: 1rem; width: 15px; height: 15px"
+                *ngIf="networks.yahoo === true"
+                icon="checkmark"
+                status="success"
+              ></nb-icon
+              >Yahoo</nb-accordion-item-header
+            >
+            <nb-accordion-item-body>
+              <nb-checkbox (checkedChange)="toggleNetwork($event, 'yahoo')">Status</nb-checkbox>
+              <div class="checked-icon" *ngIf="networks.yahoo === true">
+                <header>Site ID</header>
+                <input nbInput fullWidth [(ngModel)]="package" id="inputAppName" placeholder="Enter Site ID" />
+                <header>Placement ID</header>
+                <input nbInput fullWidth [(ngModel)]="package" id="inputAppName" placeholder="Enter Placement ID" />
+              </div>
+            </nb-accordion-item-body>
+          </nb-accordion-item>
+        </nb-accordion>
+      </nb-card>
+    </div>
+    <div class="col-md-9">
+      <nb-card style="margin-top: 15px">
+        <nb-card-header
+          >Other Networks<nb-icon
+            style="margin: 0 0 0 10px; font-size: 1rem; width: 15px; height: 15px"
+            nbTooltip="MAX in-app bidders are SDK based networks that compete to maximize revenue in a real-time auction. Revenue estimated is expected to match the revenue reported by the network partner."
+            class="nb-help"
+            nbTooltipPlacement="top"
+          ></nb-icon
+        ></nb-card-header>
+        <nb-accordion multi>
+          <nb-accordion-item>
+            <nb-accordion-item-header
+              ><nb-icon
+                style="margin: 0 5px 0 0; font-size: 1rem; width: 15px; height: 15px"
+                *ngIf="networks.adMob === false"
+                icon="close-circle"
+                status="danger"
+              ></nb-icon
+              ><nb-icon
+                style="margin: 0 5px 0 0; font-size: 1rem; width: 15px; height: 15px"
+                *ngIf="networks.adMob === true"
+                icon="checkmark"
+                status="success"
+              ></nb-icon
+              >AdMob</nb-accordion-item-header
+            >
+            <nb-accordion-item-body>
+              <nb-checkbox (checkedChange)="toggleNetwork($event, 'adMob')">Status</nb-checkbox>
+              <div class="row show-grid">
+                <div class="col-md-10">
+                  <div class="checked-icon">
+                    <header>Google App ID</header>
+                    <input
+                      nbInput
+                      fullWidth
+                      [(ngModel)]="package"
+                      type="text"
+                      id="inputAppName"
+                      placeholder="e.g ca-app-pub-xxxxxxxxxxxxxxxx~xxxxxxxxxxx"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div class="row show-grid">
+                <div class="col-md-10">
+                  <header>Ad Unit ID</header>
+                  <input
+                    nbInput
+                    fullWidth
+                    [(ngModel)]="package"
+                    id="inputAppName"
+                    placeholder="e.g ca-app-pub-xxxxxxxxxxxxxxxx/xxxxxxxxxxx"
+                  />
+                </div>
+                <div class="col-md-2">
+                  <header>CPM Price</header>
+                  <input style="width: 100px" type="text" nbInput placeholder="Amount" />
+                </div>
+              </div>
+              <div class="row show-grid">
+                <div class="col-md-4">
+                  <header>
+                    Country Targeting<nb-icon
+                      style="margin: 0 0 0 10px; font-size: 1rem; width: 15px; height: 15px"
+                      nbTooltip="MAX country targeting allows you to include or exclude countries. Please make sure to select and apply the desired targeting before you save your changes."
+                      class="nb-help"
+                      nbTooltipPlacement="bottom"
+                    ></nb-icon>
+                  </header>
+                  <nb-select matRipple selected="INCLUDE">
+                    <nb-option matRipple value="INCLUDE">Include</nb-option>
+                    <nb-option matRipple value="EXCLUDE">Exclude</nb-option>
+                  </nb-select>
+                </div>
+                <div class="col-md-6" style="margin-top: 15px">
+                  <input nbInput matRipple fullWidth [nbPopover]="contryTargetComponent" placeholder="Include All" />
+                </div>
+                <div class="col-md-1" style="margin-top: 15px">
+                  <nb-icon icon="more-vertical-outline"></nb-icon>
+                </div>
+              </div>
+            </nb-accordion-item-body>
+          </nb-accordion-item>
+        </nb-accordion>
+      </nb-card>
+    </div>
+
+    <div class="col-md-9">
+      <nb-card>
+        <nb-card-body>
+          <div class="waterfall-text">
+            Frequency Capping
+            <nb-icon
+              style="margin: 0 0 0 10px; font-size: 1rem; width: 15px; height: 15px"
+              nbTooltip="Frequency capping can be used to limit the number of ads seen by a user based on the session or the time defined."
+              nbTooltipPlacement="right"
+              class="nb-help"
+            ></nb-icon>
+          </div>
+
+          <div class="col-sm-9">
+            <nb-radio-group [(ngModel)]="isFrequencyCapping" name="frequencyCapping">
+              <nb-radio *ngFor="let status of frequencyCapping" [value]="status.value">
+                {{ status.label }}
+              </nb-radio>
+            </nb-radio-group>
+          </div>
+        </nb-card-body>
+        <nb-card-body>
+          <div class="waterfall-text">
+            Bid Floor
+            <nb-icon
+              style="margin: 0 0 0 10px; font-size: 0.8rem; width: 10px; height: 10px"
+              nbTooltip="You can use bid floors to ensure no ads are shown that would generate less than a specific CPM. This may have a negative impact on overall fill and revenue."
+              nbTooltipPlacement="right"
+              class="nb-help"
+            ></nb-icon>
+          </div>
+
+          <div class="col-sm-9">
+            <nb-radio-group [(ngModel)]="isBidFloor" name="bidfloor">
+              <nb-radio *ngFor="let status of bidFloor" [value]="status.value">
+                {{ status.label }}
+              </nb-radio>
+            </nb-radio-group>
+          </div>
+        </nb-card-body>
+      </nb-card>
+    </div>
+  </div>
+  <button
+    type="button"
+    (click)="onClickSubmit({adUnit, platform, adType, package, isFrequencyCapping, isBidFloor, templateSize})"
+    class="btn btn-success"
+    style="margin-left: 200px"
+  >
+    Save
+  </button>
+  <button [routerLink]="'..'" type="button" class="btn btn-secondary float-right" style="margin-right: 200px">
+    Back
+  </button>
+</div>

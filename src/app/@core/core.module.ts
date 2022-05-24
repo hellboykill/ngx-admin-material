@@ -32,6 +32,8 @@ import { CountryOrderData } from './data/country-order';
 import { StatsProgressBarData } from './data/stats-progress-bar';
 import { VisitorsAnalyticsData } from './data/visitors-analytics';
 import { SecurityCamerasData } from './data/security-cameras';
+import { MaxTableData } from "./data/max-table";
+import { MaxTableService } from "./mock/max-table.service";
 
 import { UserService } from './mock/users.service';
 import { ElectricityService } from './mock/electricity.service';
@@ -77,6 +79,7 @@ const DATA_SERVICES = [
   { provide: UserData, useClass: UserService },
   { provide: ElectricityData, useClass: ElectricityService },
   { provide: SmartTableData, useClass: SmartTableService },
+  { provide: MaxTableData, useClass: MaxTableService },
   { provide: UserActivityData, useClass: UserActivityService },
   { provide: OrdersChartData, useClass: OrdersChartService },
   { provide: ProfitChartData, useClass: ProfitChartService },
