@@ -479,7 +479,7 @@
             <nb-accordion-item-body>
               <nb-checkbox (checkedChange)="toggleNetwork($event, 'adMob')">Status</nb-checkbox>
               <div class="row show-grid">
-                <div class="col-md-6">
+                <div class="col-md-10">
                   <div class="checked-icon">
                     <header>Google App ID</header>
                     <input
@@ -494,7 +494,7 @@
                 </div>
               </div>
               <div class="row show-grid">
-                <div class="col-md-6">
+                <div class="col-md-10">
                   <header>Ad Unit ID</header>
                   <input
                     nbInput
@@ -508,17 +508,25 @@
                   <header>CPM Price</header>
                   <input style="width: 100px" type="text" nbInput placeholder="Amount" />
                 </div>
-                <!-- <div class="col-md-3">
+              </div>
+              <div class="row show-grid">
+                <div class="col-md-4">
                   <header>
                     Country Targeting<nb-icon
                       style="margin: 0 0 0 10px; font-size: 1rem; width: 15px; height: 15px"
                       nbTooltip="MAX country targeting allows you to include or exclude countries. Please make sure to select and apply the desired targeting before you save your changes."
                       class="nb-help"
-                      nbTooltipPlacement="right"
+                      nbTooltipPlacement="bottom"
                     ></nb-icon>
                   </header>
+                  <nb-select matRipple selected="INCLUDE">
+                    <nb-option matRipple value="INCLUDE">Include</nb-option>
+                    <nb-option matRipple value="EXCLUDE">Exclude</nb-option>
+                  </nb-select>
+                </div>
+                <div class="col-md-6" style="margin-top: 15px">
                   <input nbInput matRipple fullWidth [nbPopover]="contryTargetComponent" placeholder="Include All" />
-                </div> -->
+                </div>
                 <div class="col-md-1" style="margin-top: 15px">
                   <nb-icon icon="more-vertical-outline"></nb-icon>
                 </div>

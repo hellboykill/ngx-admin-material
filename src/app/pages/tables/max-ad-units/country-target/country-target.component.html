@@ -1,12 +1,12 @@
 <nb-card class="popover-card">
   <nb-card-header style="text-align: center" status="warning">Country Targeting</nb-card-header>
   <nb-card-body>
-    <nb-radio-group [(ngModel)]="countryType">
+    <!-- <nb-radio-group [(ngModel)]="countryType">
       <nb-radio value="INCLUDE">Include</nb-radio>
       <nb-radio value="EXCLUDE">Exclude</nb-radio>
-    </nb-radio-group>
+    </nb-radio-group> -->
 
-    <ng-multiselect-dropdown
+    <!-- <ng-multiselect-dropdown
       [placeholder]="''"
       [settings]="dropdownSettings"
       [(ngModel)]="selectedItems"
@@ -14,7 +14,42 @@
       (onSelect)="onItemSelect($event)"
       (onDeSelect)="onItemDeSelect($event)"
     >
-    </ng-multiselect-dropdown>
+    </ng-multiselect-dropdown> -->
+    <div class="autocomplete">
+      <div class="chips-input-container">
+        <!-- <div id="test" class="user-chip" *ngFor="let user of userSelects">
+          {{ user.label }}
+          <div (click)="deleteSelects(user)" class="delete-icon-chip">&#10006;</div>
+        </div> -->
+
+        <!-- <textarea
+          id="test"
+          name="suggestion"
+          type="text"
+          (keyup)="onKeyPress($event)"
+          [(ngModel)]="userSelectsString"
+        ></textarea> -->
+        <!-- data="suggestions" -->
+
+        <div type="text" contenteditable class="item-list" id="txtDiv" tabindex="0">
+          <label id="test" class="user-chip" *ngFor="let user of userSelects">
+            {{ user.label }}
+            <label (click)="deleteSelects(user)" class="delete-icon-chip">&#10006;</label>
+          </label>
+          <!-- <input name="suggestion" type="text" (keyup)="onKeyPress($event)" [(ngModel)]="userSelectsString" /> -->
+        </div>
+      </div>
+
+      <div class="autocomplete-items" *ngIf="show">
+        <div
+          *ngFor="let s of suggestions"
+          [ngClass]="isSelected(s) ? 'selected-suggestion' : ''"
+          (click)="selectSuggestion(s)"
+        >
+          {{ s.label }}
+        </div>
+      </div>
+    </div>
 
     <label style="margin: 10px 0 0 15px"
       >Common Region Shortcuts:
@@ -27,11 +62,13 @@
     ></label>
 
     <div>
-      <span class="country-label" (click)="onSelectCountryGroup(group)" *ngFor="let group of groups">{{ group }}</span>
+      <span class="country-label" (click)="onSelectCountryGroup(group.value)" *ngFor="let group of groups">{{
+        group.label
+      }}</span>
     </div>
   </nb-card-body>
   <nb-card-body>
-    <button type="button" class="btn btn-outline-secondary">Clear All</button>
+    <button type="button" class="btn btn-outline-secondary" (click)="onDeleteAll()">Clear All</button>
     <button
       type="button"
       class="btn btn-outline-info float-right"
