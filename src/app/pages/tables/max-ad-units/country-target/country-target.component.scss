@@ -8,12 +8,11 @@ $base-dropdown-options: 400px;
 .popover-card {
   margin: 0;
   max-height: 700px;
-
   width: 30rem;
 }
 
 .country-label {
-  margin-left: 15px;
+  margin: 10px 0 0 15px;
   color: rgb(73, 192, 240);
 }
 
@@ -29,7 +28,7 @@ $base-dropdown-options: 400px;
   border: 1px solid grey;
 }
 
-textarea {
+input {
   font-weight: 600;
   border: none;
   outline: none;
@@ -37,7 +36,7 @@ textarea {
   height: 30px;
   width: $base-dropdown-options;
 }
-textarea:hover {
+input:hover {
   border: none;
   border-radius: 0px;
 }
@@ -94,4 +93,15 @@ textarea:hover {
 .item-list {
   min-height: 50px;
   width: 400px;
+}
+
+.icon-placement {
+  display: flex;
+  -webkit-box-align: center;
+  align-items: center;
+  height: 31px;
+  width: 30px;
+  padding: 5px;
+  border: 5px solid rgb(194, 3, 3);
+  border-radius: 4px;
 }

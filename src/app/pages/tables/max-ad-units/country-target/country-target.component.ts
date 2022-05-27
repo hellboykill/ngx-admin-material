@@ -1,7 +1,6 @@
 import { Component } from "@angular/core";
 import { Country } from "../create/max-helper";
 import * as ContryCode from "./country-helper";
-
 import { IDropdownSettings } from "ng-multiselect-dropdown";
 
 @Component({
@@ -19,36 +18,11 @@ export class CountryTargetComponent {
     apac: ContryCode.country_APAC,
     nonEEA: ContryCode.country_nonEEA,
   };
-  // dropdownList = [
-  //   ...ContryCode.country_Tier1,
-  //   ...ContryCode.country_EEA,
-  //   ...ContryCode.country_LATAM,
-  //   ...ContryCode.country_APAC,
-  //   ...ContryCode.country_nonEEA,
-  // ].sort((a: any, b: any) => (a.label > b.label ? 1 : b.label > a.label ? -1 : 0));
 
   countryType = "INCLUDE";
 
-  // dropdownSettings: IDropdownSettings = {
-  //   closeDropDownOnSelection: false,
-  //   itemsShowLimit: 50,
-  //   enableCheckAll: false,
-  //   idField: "value",
-  //   textField: "label",
-  //   maxHeight: 400,
-  //   allowSearchFilter: true,
-  // };
-
   selectedItems = [{ value: "us", label: "United States" }];
 
-  // onItemSelect(item: any) {
-  //   console.log("onItemSelect", item);
-  // }
-
-  // onItemDeSelect(item: any) {
-  //   console.log("selected item after delete", this.selectedItems);
-  //   console.log("onItemDeSelect", item);
-  // }
   onSelectCountryGroup(id: string) {
     if (this.userSelects.length === 0) {
       this.userSelects.push(...this.lsCountry[id]);
@@ -79,18 +53,11 @@ export class CountryTargetComponent {
   userSelectsString = "";
   name = "Angular";
   userSelects = [];
-  suggestions = [
-    ...ContryCode.country_Tier1,
-    ...ContryCode.country_EEA,
-    ...ContryCode.country_LATAM,
-    ...ContryCode.country_APAC,
-    ...ContryCode.country_nonEEA,
-  ].sort((a: any, b: any) => (a.label > b.label ? 1 : b.label > a.label ? -1 : 0));
-  show: boolean = false;
+  suggestions = [...ContryCode.country_Tier1, ...ContryCode.country_EEA, ...ContryCode.country_LATAM, ...ContryCode.country_APAC, ...ContryCode.country_nonEEA].sort((a: any, b: any) =>
+    a.label > b.label ? 1 : b.label > a.label ? -1 : 0
+  );
 
-  // suggest() {
-  //   this.show = true;
-  // }
+  show: boolean = false;
 
   onKeyPress($event: any) {
     if ($event.target.value) {
@@ -101,13 +68,9 @@ export class CountryTargetComponent {
       this.suggestions = results;
       //  console.log($event.target.value);
     } else {
-      this.suggestions = [
-        ...ContryCode.country_Tier1,
-        ...ContryCode.country_EEA,
-        ...ContryCode.country_LATAM,
-        ...ContryCode.country_APAC,
-        ...ContryCode.country_nonEEA,
-      ].sort((a: any, b: any) => (a.label > b.label ? 1 : b.label > a.label ? -1 : 0));
+      this.suggestions = [...ContryCode.country_Tier1, ...ContryCode.country_EEA, ...ContryCode.country_LATAM, ...ContryCode.country_APAC, ...ContryCode.country_nonEEA].sort((a: any, b: any) =>
+        a.label > b.label ? 1 : b.label > a.label ? -1 : 0
+      );
     }
   }
 
@@ -116,9 +79,7 @@ export class CountryTargetComponent {
   }
 
   selectSuggestion(s) {
-    this.userSelects.find((item) => item.value === s.value)
-      ? (this.userSelects = this.userSelects.filter((item) => item.value !== s.value))
-      : this.userSelects.push(s);
+    this.userSelects.find((item) => item.value === s.value) ? (this.userSelects = this.userSelects.filter((item) => item.value !== s.value)) : this.userSelects.push(s);
   }
 
   deleteSelects(s) {

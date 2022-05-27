@@ -1,0 +1,367 @@
+<nb-card class="popover-card">
+  <nb-card-header style="text-align: center" status="warning">Country Targeting</nb-card-header>
+  <nb-card-body>
+    <!-- <nb-radio-group [(ngModel)]="countryType">
+        <nb-radio value="INCLUDE">Include</nb-radio>
+        <nb-radio value="EXCLUDE">Exclude</nb-radio>
+      </nb-radio-group> -->
+
+    <!-- <ng-multiselect-dropdown
+        [placeholder]="''"
+        [settings]="dropdownSettings"
+        [(ngModel)]="selectedItems"
+        [data]="dropdownList"
+        (onSelect)="onItemSelect($event)"
+        (onDeSelect)="onItemDeSelect($event)"
+      >
+      </ng-multiselect-dropdown> -->
+    <div class="autocomplete">
+      <div class="chips-input-container">
+        <!-- <div id="test" class="user-chip" *ngFor="let user of userSelects">
+            {{ user.label }}
+            <div (click)="deleteSelects(user)" class="delete-icon-chip">&#10006;</div>
+          </div> -->
+
+        <!-- <textarea
+            id="test"
+            name="suggestion"
+            type="text"
+            (keyup)="onKeyPress($event)"
+            [(ngModel)]="userSelectsString"
+          ></textarea> -->
+        <!-- data="suggestions" -->
+
+        <div type="text" contenteditable class="item-list" id="txtDiv" tabindex="0">
+          <label id="test" class="user-chip" *ngFor="let user of userSelects">
+            {{ user.label }}
+            <label (click)="deleteSelects(user)" class="delete-icon-chip">&#10006;</label>
+          </label>
+          <!-- <input name="suggestion" type="text" (keyup)="onKeyPress($event)" [(ngModel)]="userSelectsString" /> -->
+        </div>
+      </div>
+
+      <div class="autocomplete-items" *ngIf="show">
+        <div *ngFor="let s of suggestions" [ngClass]="isSelected(s) ? 'selected-suggestion' : ''" (click)="selectSuggestion(s)">{{ s.label }}</div>
+      </div>
+    </div>
+
+    <label style="margin: 10px 0 0 15px"
+      >Common Region Shortcuts:
+      <nb-icon
+        style="margin: 0 0 0 10px; font-size: 1rem; width: 15px; height: 15px"
+        nbTooltip="Use these shortcuts to target pre-defined common country groups."
+        nbTooltipPlacement="top"
+        class="nb-help"
+      ></nb-icon
+    ></label>
+
+    <div>
+      <span class="country-label" (click)="onSelectCountryGroup(group.value)" *ngFor="let group of groups">{{ group.label }}</span>
+    </div>
+  </nb-card-body>
+  <nb-card-body>
+    <button type="button" class="btn btn-outline-secondary" (click)="onDeleteAll()">Clear All</button>
+    <button type="button" class="btn btn-outline-info float-right" (click)="onApplyCountry({countryType, selectedItems})">Apply</button>
+  </nb-card-body>
+</nb-card>
+
+<nb-accordion-item>
+  <nb-accordion-item-header
+    ><nb-icon style="margin: 0 5px 0 0; font-size: 1rem; width: 15px; height: 15px" *ngIf="networks.adMob === false" icon="close-circle" status="danger"></nb-icon
+    ><nb-icon style="margin: 0 5px 0 0; font-size: 1rem; width: 15px; height: 15px" *ngIf="networks.adMob === true" icon="checkmark" status="success"></nb-icon>AdMob</nb-accordion-item-header
+  >
+  <nb-accordion-item-body>
+    <nb-checkbox (checkedChange)="toggleNetwork($event, 'adMob')">Status</nb-checkbox>
+    <div class="row show-grid">
+      <div class="col-md-10">
+        <div class="checked-icon">
+          <header>Google App ID</header>
+          <input nbInput fullWidth [(ngModel)]="adMob.ad_network_app_id" type="text" id="inputAppName" placeholder="e.g ca-app-pub-xxxxxxxxxxxxxxxx~xxxxxxxxxxx" [disabled]="adMob.disabled" />
+        </div>
+      </div>
+    </div>
+    <div *ngIf="adMob.disabled === false" class="containner">
+      <div *ngFor="let index of indexAdUnit; let i = index" id="placement{{ index }}">
+        <nb-accordion-item-body>
+          <div class="row show-grid">
+            <div class="col-md-8">
+              <header>Ad Unit ID</header>
+              <input
+                nbInput
+                fullWidth
+                [(ngModel)]="adMob.ad_network_ad_units[i].ad_network_ad_unit_id"
+                id="ad{{ index }}"
+                placeholder="e.g ca-app-pub-xxxxxxxxxxxxxxxx/xxxxxxxxxxx"
+                [disabled]="adMob.ad_network_ad_units[i].disabled"
+              />
+            </div>
+            <div class="col-md-2" style="margin-left: 70px">
+              <header>CPM Price</header>
+              <input style="width: 100px" type="number" nbInput [(ngModel)]="adMob.ad_network_ad_units[i].cpm" placeholder="Amount" [disabled]="adMob.ad_network_ad_units[i].disabled" />
+            </div>
+          </div>
+          <div class="row show-grid">
+            <div class="col-md-3">
+              <header>
+                Country Targeting<nb-icon
+                  style="margin: 0 0 10px; font-size: 1rem; width: 15px; height: 15px"
+                  [nbTooltip]="tooltipHelper.countryTargeting"
+                  class="nb-help"
+                  nbTooltipPlacement="bottom"
+                ></nb-icon>
+              </header>
+              <nb-select matRipple style="width: 150px" [(selected)]="adMob.ad_network_ad_units[i].countries.type" [disabled]="adMob.ad_network_ad_units[i].disabled">
+                <nb-option matRipple value="INCLUDE">Include</nb-option>
+                <nb-option matRipple value="EXCLUDE">Exclude</nb-option>
+              </nb-select>
+            </div>
+            <div class="col-md-7" style="margin-top: 20px">
+              <ng-select
+                [items]="countries$ | async"
+                [multiple]="true"
+                [closeOnSelect]="false"
+                [hideSelected]="true"
+                [clearSearchOnAdd]="true"
+                bindValue="value"
+                bindLabel="label"
+                placeholder="Select Country"
+                [(ngModel)]="adMob.ad_network_ad_units[i].countries.value"
+                [disabled]="adMob.ad_network_ad_units[i].disabled"
+              >
+              </ng-select>
+            </div>
+          </div>
+          <div class="row show-grid">
+            <label style="margin: 10px 0 0 15px"
+              >Common Region Shortcuts:
+              <nb-icon
+                style="margin: 0 0 0 10px; font-size: 1rem; width: 15px; height: 15px"
+                nbTooltip="Use these shortcuts to target pre-defined common country groups."
+                nbTooltipPlacement="top"
+                class="nb-help"
+              ></nb-icon
+            ></label>
+
+            <div style="margin: 10px 0 0 15px">
+              <span class="country-label" (click)="onSelectCountryGroup(group.value, i)" *ngFor="let group of groups">{{ group.label }}</span>
+            </div>
+            <div class="col-md-4">
+              <div class="btn-group" role="group" style="margin-left: 40px">
+                <button *ngIf="adMob.ad_network_ad_units[i].disabled === false" type="button" class="btn btn-outline-warning" (click)="pausePlacement(i)">Pause</button>
+                <button *ngIf="adMob.ad_network_ad_units[i].disabled !== false" type="button" class="btn btn-outline-info" (click)="unPausePlacement(i)">UnPause</button>
+                <button *ngIf="indexAdUnit.length !== 1" type="button" class="btn btn-outline-danger" (click)="removePlacement(i)">Remove</button>
+              </div>
+            </div>
+          </div></nb-accordion-item-body
+        >
+      </div>
+    </div>
+    <!-- <div *ngIf="adMob.disabled === false" class="row show-grid"> -->
+
+    <div *ngIf="adMob.disabled === false" class="row show-grid">
+      <div class="col-md-12" style="text-align: center">
+        <nb-icon style="margin: 0 0 0 10px; font-size: 1rem; width: 15px; height: 15px" nbTooltipPlacement="top" icon="plus-outline"></nb-icon><label (click)="addPlacement()">Add New Ad Unit</label>
+      </div>
+    </div>
+  </nb-accordion-item-body>
+</nb-accordion-item>
+
+<nb-accordion-item>
+  <nb-accordion-item-header
+    ><nb-icon style="margin: 0 5px 0 0; font-size: 1rem; width: 15px; height: 15px" *ngIf="networks.adColony === false" icon="close-circle" status="danger"></nb-icon
+    ><nb-icon style="margin: 0 5px 0 0; font-size: 1rem; width: 15px; height: 15px" *ngIf="networks.adColony === true" icon="checkmark" status="success"></nb-icon>AdColony</nb-accordion-item-header
+  >
+  <nb-accordion-item-body>
+    <nb-checkbox (checkedChange)="toggleNetwork($event, 0, 'adColony')">Status</nb-checkbox>
+    <div class="checked-icon" *ngIf="networks.adColony === true">
+      <header>App ID</header>
+      <input nbInput fullWidth [(ngModel)]="package" id="inputAppName" placeholder="Enter App ID" />
+      <header>Zone ID</header>
+      <input nbInput fullWidth [(ngModel)]="package" id="inputAppName" placeholder="Enter Zone ID" />
+    </div>
+  </nb-accordion-item-body>
+</nb-accordion-item>
+<nb-accordion-item>
+  <nb-accordion-item-header
+    ><nb-icon style="margin: 0 5px 0 0; font-size: 1rem; width: 15px; height: 15px" *ngIf="networks.meta === false" icon="close-circle" status="danger"></nb-icon
+    ><nb-icon style="margin: 0 5px 0 0; font-size: 1rem; width: 15px; height: 15px" *ngIf="networks.meta === true" icon="checkmark" status="success"></nb-icon>Meta</nb-accordion-item-header
+  >
+  <nb-accordion-item-body>
+    <nb-checkbox (checkedChange)="toggleNetwork($event, 0, 'meta')">Status</nb-checkbox>
+    <div class="checked-icon" *ngIf="networks.meta === true">
+      <header>Placement ID</header>
+      <input nbInput fullWidth [(ngModel)]="package" id="inputAppName" placeholder="e.g 436418353000121_491210917953864" />
+    </div>
+  </nb-accordion-item-body>
+</nb-accordion-item>
+<nb-accordion-item>
+  <nb-accordion-item-header
+    ><nb-icon style="margin: 0 5px 0 0; font-size: 1rem; width: 15px; height: 15px" *ngIf="networks.inMobi === false" icon="close-circle" status="danger"></nb-icon
+    ><nb-icon style="margin: 0 5px 0 0; font-size: 1rem; width: 15px; height: 15px" *ngIf="networks.inMobi === true" icon="checkmark" status="success"></nb-icon>InMobi</nb-accordion-item-header
+  >
+  <nb-accordion-item-body>
+    <nb-checkbox (checkedChange)="toggleNetwork($event, 0, 'inMobi')">Status</nb-checkbox>
+    <div class="checked-icon" *ngIf="networks.inMobi === true">
+      <header>Account ID</header>
+      <input nbInput fullWidth [(ngModel)]="package" id="inputAppName" placeholder="Enter Account ID" />
+      <header>Pkacement ID</header>
+      <input nbInput fullWidth [(ngModel)]="package" id="inputAppName" placeholder="Enter Placement ID" />
+    </div>
+  </nb-accordion-item-body>
+</nb-accordion-item>
+
+<nb-accordion-item>
+  <nb-accordion-item-header
+    ><nb-icon style="margin: 0 5px 0 0; font-size: 1rem; width: 15px; height: 15px" *ngIf="networks.mytarget === false" icon="close-circle" status="danger"></nb-icon
+    ><nb-icon style="margin: 0 5px 0 0; font-size: 1rem; width: 15px; height: 15px" *ngIf="networks.mytarget === true" icon="checkmark" status="success"></nb-icon>MyTarget</nb-accordion-item-header
+  >
+  <nb-accordion-item-body>
+    <nb-checkbox (checkedChange)="toggleNetwork($event, 0, 'mytarget')">Status</nb-checkbox>
+    <div class="checked-icon" *ngIf="networks.mytarget === true">
+      <header>Slot ID</header>
+      <input nbInput fullWidth [(ngModel)]="package" id="inputAppName" placeholder="Enter Slot ID" />
+    </div>
+  </nb-accordion-item-body>
+</nb-accordion-item>
+<nb-accordion-item>
+  <nb-accordion-item-header
+    ><nb-icon style="margin: 0 5px 0 0; font-size: 1rem; width: 15px; height: 15px" *ngIf="networks.pangle === false" icon="close-circle" status="danger"></nb-icon
+    ><nb-icon style="margin: 0 5px 0 0; font-size: 1rem; width: 15px; height: 15px" *ngIf="networks.pangle === true" icon="checkmark" status="success"></nb-icon>Pangle</nb-accordion-item-header
+  >
+  <nb-accordion-item-body>
+    <nb-checkbox (checkedChange)="toggleNetwork($event, 0, 'pangle')">Status</nb-checkbox>
+    <div class="checked-icon" *ngIf="networks.pangle === true">
+      <header>App ID</header>
+      <input nbInput fullWidth [(ngModel)]="package" id="inputAppName" placeholder="Enter App ID" />
+      <header>Slot ID</header>
+      <input nbInput fullWidth [(ngModel)]="package" id="inputAppName" placeholder="Enter Slot ID" />
+    </div>
+  </nb-accordion-item-body>
+</nb-accordion-item>
+<nb-accordion-item>
+  <nb-accordion-item-header
+    ><nb-icon style="margin: 0 5px 0 0; font-size: 1rem; width: 15px; height: 15px" *ngIf="networks.smaato === false" icon="close-circle" status="danger"></nb-icon
+    ><nb-icon style="margin: 0 5px 0 0; font-size: 1rem; width: 15px; height: 15px" *ngIf="networks.smaato === true" icon="checkmark" status="success"></nb-icon>Smaato</nb-accordion-item-header
+  >
+  <nb-accordion-item-body>
+    <nb-checkbox (checkedChange)="toggleNetwork($event, 0, 'smaato')">Status</nb-checkbox>
+    <div class="checked-icon" *ngIf="networks.smaato === true">
+      <header>Publisher ID</header>
+      <input nbInput fullWidth [(ngModel)]="package" id="inputAppName" placeholder="e.g xxxxxxxxxxx" />
+      <header>App Space ID</header>
+      <input nbInput fullWidth [(ngModel)]="package" id="inputAppName" placeholder="e.g xxxxxxxxxxx" />
+    </div>
+  </nb-accordion-item-body>
+</nb-accordion-item>
+<nb-accordion-item>
+  <nb-accordion-item-header
+    ><nb-icon style="margin: 0 5px 0 0; font-size: 1rem; width: 15px; height: 15px" *ngIf="networks.tapjoy === false" icon="close-circle" status="danger"></nb-icon
+    ><nb-icon style="margin: 0 5px 0 0; font-size: 1rem; width: 15px; height: 15px" *ngIf="networks.tapjoy === true" icon="checkmark" status="success"></nb-icon>Tapjoy</nb-accordion-item-header
+  >
+  <nb-accordion-item-body>
+    <nb-checkbox (checkedChange)="toggleNetwork($event, 0, 'tapjoy')">Status</nb-checkbox>
+    <div class="checked-icon" *ngIf="networks.tapjoy === true">
+      <header>SDK Key</header>
+      <input nbInput fullWidth [(ngModel)]="package" id="inputAppName" placeholder="Enter SDK Key" />
+      <header>Placement Name</header>
+      <input nbInput fullWidth [(ngModel)]="package" id="inputAppName" placeholder="Enter Placement Name" />
+    </div>
+  </nb-accordion-item-body>
+</nb-accordion-item>
+<nb-accordion-item>
+  <nb-accordion-item-header
+    ><nb-icon style="margin: 0 5px 0 0; font-size: 1rem; width: 15px; height: 15px" *ngIf="networks.verveGroup === false" icon="close-circle" status="danger"></nb-icon
+    ><nb-icon style="margin: 0 5px 0 0; font-size: 1rem; width: 15px; height: 15px" *ngIf="networks.verveGroup === true" icon="checkmark" status="success"></nb-icon>Verve
+    Group</nb-accordion-item-header
+  >
+  <nb-accordion-item-body>
+    <nb-checkbox (checkedChange)="toggleNetwork($event, 0, 'verveGroup')">Status</nb-checkbox>
+    <div class="checked-icon" *ngIf="networks.verveGroup === true">
+      <header>App Token</header>
+      <input nbInput fullWidth [(ngModel)]="package" id="inputAppName" placeholder="Enter App Token" />
+      <header>Zone Reference</header>
+      <input nbInput fullWidth [(ngModel)]="package" id="inputAppName" placeholder="Enter Zone Reference" />
+    </div>
+  </nb-accordion-item-body>
+</nb-accordion-item>
+<nb-accordion-item>
+  <nb-accordion-item-header
+    ><nb-icon style="margin: 0 5px 0 0; font-size: 1rem; width: 15px; height: 15px" *ngIf="networks.vungle === false" icon="close-circle" status="danger"></nb-icon
+    ><nb-icon style="margin: 0 5px 0 0; font-size: 1rem; width: 15px; height: 15px" *ngIf="networks.vungle === true" icon="checkmark" status="success"></nb-icon>Vungle</nb-accordion-item-header
+  >
+  <nb-accordion-item-body>
+    <nb-checkbox (checkedChange)="toggleNetwork($event, 0, 'vungle')">Status</nb-checkbox>
+    <div class="checked-icon" *ngIf="networks.vungle === true">
+      <header>App ID</header>
+      <input nbInput fullWidth [(ngModel)]="package" id="inputAppName" placeholder="Enter App ID" />
+      <header>Placement Reference ID</header>
+      <input nbInput fullWidth [(ngModel)]="package" id="inputAppName" placeholder="Enter Placement Reference ID" />
+    </div>
+  </nb-accordion-item-body>
+</nb-accordion-item>
+<nb-accordion-item>
+  <nb-accordion-item-header
+    ><nb-icon style="margin: 0 5px 0 0; font-size: 1rem; width: 15px; height: 15px" *ngIf="networks.yahoo === false" icon="close-circle" status="danger"></nb-icon
+    ><nb-icon style="margin: 0 5px 0 0; font-size: 1rem; width: 15px; height: 15px" *ngIf="networks.yahoo === true" icon="checkmark" status="success"></nb-icon>Yahoo</nb-accordion-item-header
+  >
+  <nb-accordion-item-body>
+    <nb-checkbox (checkedChange)="toggleNetwork($event, 0, 'yahoo')">Status</nb-checkbox>
+    <div class="checked-icon" *ngIf="networks.yahoo === true">
+      <header>Site ID</header>
+      <input nbInput fullWidth [(ngModel)]="package" id="inputAppName" placeholder="Enter Site ID" />
+      <header>Placement ID</header>
+      <input nbInput fullWidth [(ngModel)]="package" id="inputAppName" placeholder="Enter Placement ID" />
+    </div>
+  </nb-accordion-item-body>
+</nb-accordion-item>
+
+<nb-accordion-item>
+  <nb-accordion-item-header
+    ><nb-icon style="margin: 0 5px 0 0; font-size: 1rem; width: 15px; height: 15px" *ngIf="networks.mintegral === false" icon="close-circle" status="danger"></nb-icon
+    ><nb-icon style="margin: 0 5px 0 0; font-size: 1rem; width: 15px; height: 15px" *ngIf="networks.mintegral === true" icon="checkmark" status="success"></nb-icon>Mintegral</nb-accordion-item-header
+  >
+  <nb-accordion-item-body>
+    <nb-checkbox (checkedChange)="toggleNetwork($event, 0, 'mintegral')">Status</nb-checkbox>
+    <div class="checked-icon" *ngIf="networks.mintegral === true">
+      <header>App Key</header>
+      <input nbInput fullWidth [(ngModel)]="package" id="inputAppName" placeholder="Enter App Key" />
+      <header>App ID</header>
+      <input nbInput fullWidth [(ngModel)]="package" id="inputAppName" placeholder="Enter App ID" />
+      <header>Placement ID (optional)</header>
+      <input nbInput fullWidth [(ngModel)]="package" id="inputAppName" placeholder="e.g 12345" />
+      <header>Ad Unit ID</header>
+      <input nbInput fullWidth [(ngModel)]="package" id="inputAppName" placeholder="e.g 12345" />
+    </div>
+  </nb-accordion-item-body>
+</nb-accordion-item>
+
+<!-- for tesst -->
+
+<nb-accordion *ngIf="platform !== undefined && adType !== undefined" multi>
+  <nb-accordion-item>
+    <nb-accordion-item-header><nb-icon style="margin: 0 5px 0 0; font-size: 1rem; width: 15px; height: 15px" icon="checkmark" status="success"></nb-icon>AppLovin</nb-accordion-item-header>
+  </nb-accordion-item>
+  <nb-accordion-item>
+    <nb-accordion-item-header><nb-icon style="margin: 0 5px 0 0; font-size: 1rem; width: 15px; height: 15px" icon="checkmark" status="success"></nb-icon>AppLovin Exchange</nb-accordion-item-header>
+  </nb-accordion-item>
+  <nb-accordion-item *ngFor="let bidderNetwork of getNetwork(otherNetwork, platform, adType, 'BIDDER'); let indexBidderNetwork = index" id="bidderNetwork{{ index }}">
+    <nb-accordion-item-header
+      ><nb-icon style="margin: 0 5px 0 0; font-size: 1rem; width: 15px; height: 15px" *ngIf="bidderNetwork.disabled === true" icon="close-circle" status="danger"></nb-icon
+      ><nb-icon style="margin: 0 5px 0 0; font-size: 1rem; width: 15px; height: 15px" *ngIf="bidderNetwork.disabled === false" icon="checkmark" status="success"></nb-icon>{{ bidderNetwork.ad.name
+      }}</nb-accordion-item-header
+    >
+    <nb-accordion-item-body>
+      <nb-checkbox (checkedChange)="toggleNetwork($event, indexBidderNetwork, bidderNetwork.ad.variable, 'BIDDER')">Status</nb-checkbox>
+      <div class="checked-icon">
+        <header *ngIf="bidderNetwork.appKey !== undefined">{{ bidderNetwork.appKey.name }}</header>
+        <input *ngIf="bidderNetwork.appKey !== undefined" nbInput fullWidth [(ngModel)]="package" placeholder="{{ bidderNetwork.appKey.placeholder }}" [disabled]="bidderNetwork.disabled" />
+        <header *ngIf="bidderNetwork.appId !== undefined">{{ bidderNetwork.appId.name }}</header>
+        <input *ngIf="bidderNetwork.appId !== undefined" nbInput fullWidth [(ngModel)]="package" placeholder="{{ bidderNetwork.appId.placeholder }}" [disabled]="bidderNetwork.disabled" />
+        <header *ngIf="bidderNetwork.extraParameters !== undefined">{{ bidderNetwork.extraParameters.name }}</header>
+        <input nbInput fullWidth [(ngModel)]="package" id="inputAppName" placeholder="{{ bidderNetwork.extraParameters.placeholder }}" />
+        <header *ngIf="bidderNetwork.adUnit !== undefined">{{ bidderNetwork.adUnit.name }}</header>
+        <input *ngIf="bidderNetwork.adUnit !== undefined" nbInput fullWidth [(ngModel)]="package" placeholder="{{ bidderNetwork.adUnit.placeholder }}" [disabled]="bidderNetwork.disabled" />
+      </div>
+    </nb-accordion-item-body>
+  </nb-accordion-item>
+</nb-accordion>

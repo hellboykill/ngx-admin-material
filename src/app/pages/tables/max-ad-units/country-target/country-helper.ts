@@ -7,21 +7,33 @@ export const groups: Array<IOption> = [
 ];
 
 export const country_Tier1: Array<IOption> = [
-  { value: "us", label: "United States" },
-  { value: "gb", label: "United Kingdom" },
-  { value: "ca", label: "Canada" },
-  { value: "au", label: "Australica" },
-  { value: "nz", label: "New Zealand" },
+  { value: "US", label: "United States" },
+  { value: "GB", label: "United Kingdom" },
+  { value: "CA", label: "Canada" },
+  { value: "AU", label: "Australica" },
+  { value: "NZ", label: "New Zealand" },
 ];
-export const country_EEA: Array<IOption> = [{ value: "bl", label: "Belgium" }];
-
+export const country_EEA: Array<IOption> = [
+  { value: "AT", label: "Austria" },
+  { value: "BE", label: "Belgium" },
+  { value: "DK", label: "Denmark" },
+  { value: "FI", label: "Finland" },
+  { value: "FR", label: "France" },
+  { value: "DE", label: "Germany" },
+  { value: "GR", label: "Greece" },
+  { value: "IS", label: "Iceland" },
+  { value: "IE", label: "Ireland" },
+  { value: "IT", label: "Italy" },
+  { value: "LU", label: "Luxembourg" },
+  { value: "MT", label: "Malta" },
+];
 export const country_LATAM: Array<IOption> = [
-  { value: "ar", label: "Argentina" },
-  { value: "sb", label: "Sain Barthelemy" },
-  { value: "be", label: "Belize" },
+  { value: "AR", label: "Argentina" },
+  { value: "SB", label: "Sain Barthelemy" },
+  { value: "BZ", label: "Belize" },
 ];
-export const country_APAC: Array<IOption> = [{ value: "vn", label: "Vietnam" }];
-export const country_nonEEA: Array<IOption> = [{ value: "zw", label: "Zimbabwe" }];
+export const country_APAC: Array<IOption> = [{ value: "VN", label: "Vietnam" }];
+export const country_nonEEA: Array<IOption> = [{ value: "ZW", label: "Zimbabwe" }];
 
 export interface IOption {
   value: string;
@@ -30,7 +42,7 @@ export interface IOption {
 
 export const COUNTRIES: Array<IOption> = [
   { value: "AF", label: "Afghanistan" },
-  { value: "AX", label: "Åland Islands" },
+  { value: "AX", label: "Aland Islands" },
   { value: "AL", label: "Albania" },
   { value: "DZ", label: "Algeria" },
   { value: "AS", label: "American Samoa" },
@@ -212,7 +224,7 @@ export const COUNTRIES: Array<IOption> = [
   { value: "RO", label: "Romania" },
   { value: "RU", label: "Russian Federation" },
   { value: "RW", label: "Rwanda" },
-  { value: "BL", label: "Saint Barth&eacute;lemy" },
+  { value: "BL", label: "Saint Barth" },
   { value: "SH", label: "Saint Helena, Ascension and Tristan da Cunha" },
   { value: "KN", label: "Saint Kitts and Nevis" },
   { value: "LC", label: "Saint Lucia" },
