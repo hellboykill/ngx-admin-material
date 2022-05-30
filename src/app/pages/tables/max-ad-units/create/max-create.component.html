@@ -67,6 +67,7 @@
         </nb-card-body>
       </nb-card>
     </div>
+
     <div class="col-md-9">
       <nb-card style="margin: 0">
         <nb-card-header style="margin-left: 50px"
@@ -187,6 +188,7 @@
         </nb-accordion>
       </nb-card>
     </div>
+
     <div *ngIf="platform !== undefined && adType !== undefined" class="col-md-9">
       <nb-card style="margin-top: 15px">
         <nb-card-header
@@ -407,14 +409,91 @@
             ></nb-icon>
           </div>
 
-          <div class="col-sm-9">
+          <div class="col-md-9">
             <nb-radio-group [(ngModel)]="isFrequencyCapping" name="frequencyCapping">
               <nb-radio *ngFor="let status of frequencyCapping" [value]="status.value">
                 {{ status.label }}
               </nb-radio>
             </nb-radio-group>
+            <div class="col-sm-6" style="margin-left: 20px">
+              <nb-select matRipple fullWidth placeholder="-Select Capping Method-" *ngIf="isFrequencyCapping === true">
+                <nb-option (click)="changeFrequencyType('session')" matRipple value="session">Session Based Capping</nb-option>
+                <nb-option (click)="changeFrequencyType('time')" matRipple value="time">Time Based Capping</nb-option>
+              </nb-select>
+            </div>
+          </div>
+          <div *ngIf="frequencySetting.length !== 0 && isFrequencyCapping === true" style="margin-left: 35px" class="col-sm-12">
+            <div *ngFor="let frequency of frequencySetting; let i = index" class="container">
+              <div class="row show-grid" *ngIf="frequencySetting[0].type === 'session'">
+                <label style="margin: 10px 0 0 15px">Frequency cap ads from this ad unit to no more than</label>
+                <div class="col-md-3">
+                  <nb-select matRipple fullWidth placeholder="-Select One-" [(selected)]="frequencySetting[i].session_capping_settings.session_capping">
+                    <nb-option *ngFor="let session of per_session_setting" [value]="session">{{ session }} per session</nb-option>
+                  </nb-select>
+                </div>
+                <div style="margin: 10px 0 0 15px">
+                  <span class="country-label" (click)="onSelectedCountryFre_BidFloor(group.value, i, true)" *ngFor="let group of groups">{{ group.label }}</span>
+                </div>
+              </div>
+
+              <div class="row show-grid" *ngIf="frequencySetting[0].type === 'time'">
+                <div class="col-md-3">
+                  <nb-select matRipple fullWidth placeholder="No per minute cap" [(selected)]="frequencySetting[i].time_capping_settings.minute_frequency">
+                    <nb-option *ngFor="let minuteOption of per_time_setting.per_minute_cap" [value]="minuteOption.value">{{ minuteOption.label }}</nb-option>
+                  </nb-select>
+                </div>
+                <label style="margin-top: 10px">and/or no more than</label>
+                <div class="col-md-2">
+                  <nb-select matRipple fullWidth placeholder="No daily cap" [(selected)]="frequencySetting[i].time_capping_settings.day_limit">
+                    <nb-option *ngFor="let perdayOption of per_time_setting.per_day_cap" [value]="perdayOption.value">{{ perdayOption.label }}</nb-option>
+                  </nb-select>
+                </div>
+                <div style="margin: 10px 0 0 15px">
+                  <span class="country-label" (click)="onSelectedCountryFre_BidFloor(group.value, i, true)" *ngFor="let group of groups">{{ group.label }}</span>
+                </div>
+              </div>
+
+              <div class="row show-grid">
+                <div class="col-md-5" style="margin: 20px 0 10px 0">
+                  <ng-select
+                    [items]="countries$ | async"
+                    [multiple]="true"
+                    [closeOnSelect]="false"
+                    [hideSelected]="true"
+                    [clearSearchOnAdd]="true"
+                    bindValue="value"
+                    bindLabel="label"
+                    placeholder="All Countries"
+                    [(ngModel)]="frequencySetting[i].countries.value"
+                  >
+                  </ng-select>
+                </div>
+                <label style="color: rgb(73, 192, 240); margin: 30px 0 0 20px" (click)="removeFreBidFloor(true, i)">Remove</label>
+              </div>
+            </div>
+
+            <div class="row show-grid">
+              <div class="col-md-12" style="margin-top: 20px">
+                <nb-icon style="margin: 0 0 0 10px; font-size: 1rem; width: 15px; height: 15px" nbTooltipPlacement="top" icon="plus-outline"></nb-icon
+                ><label (click)="addFreBidFloor(true, frequencySetting[0].type)">Add New Frequency Cap</label>
+              </div>
+            </div>
           </div>
         </nb-card-body>
+      </nb-card>
+    </div>
+    <div *ngIf="adType === 'Banner'" class="col-md-9">
+      <nb-card>
+        <nb-card-body>
+          <div class="waterfall-text">Refresh Interval</div>
+          <nb-select matRipple fullWidth [(selected)]="interval">
+            <nb-option *ngFor="let banner of banner_refresh" [value]="banner.value">{{ banner.label }}</nb-option>
+          </nb-select>
+        </nb-card-body>
+      </nb-card>
+    </div>
+    <div class="col-md-9">
+      <nb-card>
         <nb-card-body>
           <div class="waterfall-text">
             Bid Floor
@@ -426,12 +505,51 @@
             ></nb-icon>
           </div>
 
-          <div class="col-sm-9">
-            <nb-radio-group [(ngModel)]="isBidFloor" name="bidfloor">
+          <div class="col-sm-12">
+            <nb-radio-group [(ngModel)]="isBidFloor" name="isBidFloor">
               <nb-radio *ngFor="let status of bidFloor" [value]="status.value">
                 {{ status.label }}
               </nb-radio>
             </nb-radio-group>
+            <div *ngFor="let bidFloor of bidFloorSetting; let i = index" class="container">
+              <div class="row show-grid" *ngIf="isBidFloor === true">
+                <div class="col-md-5">
+                  <header>Country Group Name</header>
+                  <input type="text" name="bidFloor" nbInput fullWidth [(ngModel)]="bidFloorSetting[i].country_group_name" placeholder="Select a name for this group. EG, English Speaking" />
+                </div>
+                <div class="col-md-2">
+                  <header>CPM Price</header>
+                  <input style="width: 100px" type="number" nbInput [(ngModel)]="bidFloorSetting[i].cpm" placeholder="Amount" />
+                </div>
+                <div style="margin-top: 20px">
+                  <span class="country-label" (click)="onSelectedCountryFre_BidFloor(group.value, i, false)" *ngFor="let group of groups">{{ group.label }}</span>
+                </div>
+              </div>
+              <div class="row show-grid" *ngIf="isBidFloor === true">
+                <div class="col-md-7" style="margin: 20px 0 10px">
+                  <ng-select
+                    [items]="countries$ | async"
+                    [multiple]="true"
+                    [closeOnSelect]="false"
+                    [hideSelected]="true"
+                    [clearSearchOnAdd]="true"
+                    bindValue="value"
+                    bindLabel="label"
+                    placeholder="All Countries"
+                    [(ngModel)]="bidFloorSetting[i].countries.value"
+                  >
+                  </ng-select>
+                </div>
+
+                <label *ngIf="bidFloorSetting.length > 1" style="color: rgb(73, 192, 240); margin: 30px 0 0 20px" (click)="removeFreBidFloor(false, i)">Remove</label>
+              </div>
+            </div>
+            <div class="row show-grid" *ngIf="isBidFloor === true">
+              <div class="col-md-12" style="margin-top: 10px">
+                <nb-icon style="margin: 0 0 0 10px; font-size: 1rem; width: 15px; height: 15px" nbTooltipPlacement="top" icon="plus-outline"></nb-icon
+                ><label (click)="addFreBidFloor(false, 'INCLUDE')">Add New Bid Floor</label>
+              </div>
+            </div>
           </div>
         </nb-card-body>
       </nb-card>

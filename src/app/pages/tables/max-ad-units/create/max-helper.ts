@@ -142,6 +142,34 @@ export interface frequency_capping_settings {
   countries: Country;
 }
 
+export const per_session_setting = [...Array.from({ length: 20 }, (v, k) => k + 1), ...[30, 40, 50]];
+export const per_time_setting = {
+  per_minute_cap: [
+    { value: 0.5, label: "One ad every 30 seconds" },
+    { value: 1, label: "One ad every 1 minute" },
+    { value: 2, label: "One ad every 2 minute" },
+    { value: 3, label: "One ad every 3 minute" },
+    { value: 5, label: "One ad every 5 minute" },
+    { value: 10, label: "One ad every 10 minute" },
+    { value: 15, label: "One ad every 15 minute" },
+    { value: 30, label: "One ad every 30 minute" },
+    { value: 60, label: "One ad every 60 minute" },
+    { value: 120, label: "One ad every 120 minute" },
+    { value: 180, label: "One ad every 180 minute" },
+    { value: 240, label: "One ad every 240 minute" },
+    { value: 300, label: "One ad every 300 minute" },
+    { value: 360, label: "One ad every 360 minute" },
+  ],
+  per_day_cap: [
+    { value: 1, label: "1 per day" },
+    { value: 2, label: "2 per day" },
+    { value: 3, label: "3 per day" },
+    { value: 5, label: "5 per day" },
+    { value: 10, label: "10 per day" },
+    { value: 20, label: "20 per day" },
+  ],
+};
+
 /* 
 Bid Floor define
 */
@@ -151,6 +179,18 @@ export interface bid_floor_settings {
   cpm: number;
   countries: Country;
 }
+
+/** Banner refresh */
+export const banner_refresh = [
+  { value: 0, label: "MAX Optimized" },
+  { value: 10, label: "10 sec banner refresh interval" },
+  { value: 15, label: "15 sec banner refresh interval" },
+  { value: 20, label: "15 sec banner refresh interval" },
+  { value: 30, label: "15 sec banner refresh interval" },
+  { value: 45, label: "15 sec banner refresh interval" },
+  { value: 60, label: "15 sec banner refresh interval" },
+  { value: 300, label: "5 min banner refresh interval" },
+];
 
 export interface banner_refresh_settings {
   interval: number;

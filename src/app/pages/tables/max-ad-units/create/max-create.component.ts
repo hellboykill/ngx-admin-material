@@ -49,13 +49,29 @@ export class MaxCreateComponent implements OnInit {
   package: string;
   templateSize: string;
 
+  banner_refresh = MaxConfig.banner_refresh;
+  interval: number = 0;
+  frequencySetting: MaxConfig.frequency_capping_settings[] = [];
+  bidFloorSetting: MaxConfig.bid_floor_settings[] = [
+    {
+      country_group_name: "",
+      cpm: 0,
+      countries: {
+        type: MaxConfig.TypeCounty.INCLUDE,
+        value: [],
+      },
+    },
+  ];
+  per_session_setting = MaxConfig.per_session_setting;
+  per_time_setting = MaxConfig.per_time_setting;
+
   constructor(private dataService: CountryDataService) {}
 
   ngOnInit() {
     this.countries$ = this.dataService.getCountry();
   }
 
-  /** add placement ad unit  */
+  /** add placement  */
 
   addPlacement(indexNetwork: number, typeNetwork: string) {
     if (typeNetwork === "BIDDER") {
@@ -96,6 +112,38 @@ export class MaxCreateComponent implements OnInit {
     else this.lsnetworkDetails[indexNetwork].ad_network_ad_units.splice(index, 1);
   }
 
+  addFreBidFloor(isFre: boolean, type: MaxConfig.TypeFrequency) {
+    if (isFre) {
+      this.frequencySetting.push({
+        type: type,
+        time_capping_settings: {
+          day_limit: 0,
+          minute_frequency: 0,
+        },
+        session_capping_settings: { session_capping: 0 },
+        countries: {
+          type: MaxConfig.TypeCounty.INCLUDE,
+          value: [],
+        },
+      });
+    } else {
+      this.bidFloorSetting.push({
+        country_group_name: "",
+        cpm: 0,
+        countries: {
+          type: MaxConfig.TypeCounty.INCLUDE,
+          value: [],
+        },
+      });
+    }
+  }
+
+  removeFreBidFloor(isFre: boolean, index: number) {
+    if (isFre) {
+      this.frequencySetting.splice(index, 1);
+    } else this, this.bidFloorSetting.splice(index, 1);
+  }
+
   /** End of placement */
 
   toggleNetwork(checked: boolean, indexNetWork: number, network: string, typeNetwork: string) {
@@ -110,7 +158,7 @@ export class MaxCreateComponent implements OnInit {
         ...this.lsnetworkBidders[indexNetWork].ad_network_ad_units[index].countries.value,
         ...mergeArray(this.lsnetworkBidders[indexNetWork].ad_network_ad_units[index].countries.value, this.lsCountry[val]),
       ];
-    } else {
+    } else if (typeNetwork === "OTHER") {
       this.lsnetworkDetails[indexNetWork].ad_network_ad_units[index].countries.value = [
         ...this.lsnetworkDetails[indexNetWork].ad_network_ad_units[index].countries.value,
         ...mergeArray(this.lsnetworkDetails[indexNetWork].ad_network_ad_units[index].countries.value, this.lsCountry[val]),
@@ -118,6 +166,12 @@ export class MaxCreateComponent implements OnInit {
     }
 
     console.log(this.lsnetworkDetails[indexNetWork].ad_network_ad_units[index].countries.value);
+  }
+
+  onSelectedCountryFre_BidFloor(val: string, index: number, isFre: boolean) {
+    if (isFre) {
+      this.frequencySetting[index].countries.value = [...this.frequencySetting[index].countries.value, ...mergeArray(this.frequencySetting[index].countries.value, this.lsCountry[val])];
+    } else this.bidFloorSetting[index].countries.value = [...this.bidFloorSetting[index].countries.value, ...mergeArray(this.bidFloorSetting[index].countries.value, this.lsCountry[val])];
   }
 
   getNetwork(listNetwork: MaxConfig.NetworkTemplate[], platform: string, typeAd: string, typeNetwork: string) {
@@ -152,6 +206,25 @@ export class MaxCreateComponent implements OnInit {
       });
     }
     return this.lsnetworkBidders;
+  }
+
+  /** frequency  */
+
+  changeFrequencyType(type: MaxConfig.TypeFrequency) {
+    this.frequencySetting = [
+      {
+        type: type,
+        time_capping_settings: {
+          day_limit: 0,
+          minute_frequency: 0,
+        },
+        session_capping_settings: { session_capping: 0 },
+        countries: {
+          type: MaxConfig.TypeCounty.INCLUDE,
+          value: [],
+        },
+      },
+    ];
   }
 
   /** Submit data changes */

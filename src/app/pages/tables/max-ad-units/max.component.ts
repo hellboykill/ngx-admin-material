@@ -55,20 +55,20 @@ export class MaxTableComponent {
         type: "boolean",
         filter: false,
       },
-      // Edit: {
-      //   title: "Edit",
-      //   type: "html",
-      //   valuePrepareFunction: (cell, row) => {
-      //     return `<a title="See Detail Unit"href="pages/tables/max/${row.adsId}"> <i class="ion-edit"></i></a>`;
-      //   },
-      //   renderComponent: MaxEditComponent,
-      //   onComponentInitFunction: (instance) => {
-      //     instance.save.subscribe((row) => {
-      //       console.log(row);
-      //     });
-      //   },
-      //   filter: false,
-      // },
+      Edit: {
+        title: "Edit",
+        type: "html",
+        valuePrepareFunction: (cell, row) => {
+          return `<a title="See Detail Unit"href="pages/tables/max/${row.adsId}"> <i class="ion-edit"></i></a>`;
+        },
+        renderComponent: MaxEditComponent,
+        onComponentInitFunction: (instance) => {
+          instance.save.subscribe((row) => {
+            console.log(row);
+          });
+        },
+        filter: false,
+      },
     },
   };
 

@@ -23,7 +23,14 @@ const routes: Routes = [
       },
       {
         path: "max/edit",
+        redirectTo: "/max/edit/:id",
+      },
+      {
+        path: "max/edit/:id",
         component: MaxEditComponent,
+        data: {
+          animation: "max/edit",
+        },
       },
       {
         path: "smart-table",

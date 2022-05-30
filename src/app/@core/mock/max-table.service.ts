@@ -32,4 +32,6 @@ export class MaxTableService implements MaxTableData {
     });
     return adUnit;
   }
+
+  getMaxDetails(id: number | string) {}
 }
